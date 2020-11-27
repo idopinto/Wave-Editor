@@ -53,8 +53,12 @@ def negative_audio():
     pass
 
 
-def accelerate_audio(edited_wave_file_list):
-    pass
+def accelerate_audio(edited_wave_file):
+    for i in range(len(edited_wave_file[1])):
+        if i % 2 != 0:
+            edited_wave_file[1][i].reverse()
+
+    return edited_wave_file
 
 
 def slow_down_audio(edited_wave_file_list):
