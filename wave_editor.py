@@ -45,8 +45,8 @@ def get_file():
     return file_name_input
 
 
-def reverse_audio():
-    pass
+def reverse_audio(edited_wave_file):
+    return edited_wave_file[1].reverse()
 
 
 def negative_audio():
