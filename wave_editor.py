@@ -24,6 +24,15 @@ def start_menu():
 def compose_melody():
     pass
 
+def print_menu():
+    """print menu infomation"""
+    print("1. reverse audio")
+    print("2.negative")
+    print("3.accelerate")
+    print("4.slow down")
+    print("5.volume up")
+    print("6.volume down")
+    print("7.filter dim")
 def get_file():
     """
 
@@ -35,7 +44,10 @@ def get_file():
 
 def edit_wave_file():
     # get user input (1-7)
-    wave_file_list = wave_helper.load_file(get_file())
+    wave_file_list = wave_helper.load_wave(get_file())
+    print(wave_file_list)
+    print_menu()
+    user_choice = input("")
 
 
     # 1. reverse
