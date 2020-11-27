@@ -52,22 +52,33 @@ def reverse_audio(edited_wave_file):
 def negative_audio():
     pass
 
-
 def accelerate_audio(edited_wave_file):
+    accelerate_wave = [edited_wave_file[0],[]]
     for i in range(len(edited_wave_file[1])):
-        if i % 2 != 0:
-            edited_wave_file[1][i].reverse()
+        if i % 2 == 0:
+            accelerate_wave[1].append(edited_wave_file[1][i])
 
-    return edited_wave_file
+    return accelerate_wave
 
 
 def slow_down_audio(edited_wave_file_list):
     pass
 
 
-def volume_up_audio(edited_wave_file_list):
-    pass
+def volume_up_audio(edited_wave_file):
+    for i in range(len(edited_wave_file)):
+        if int(edited_wave_file[1][i][0] *1.2) in INT_RANGE :
+            edited_wave_file[1][i][0] = int(edited_wave_file[1][i][1] * 1.2)
+        elif int(edited_wave_file[1][i][0] *1.2) > max(INT_RANGE):
+            edited_wave_file[1][i][0] = max(INT_RANGE)
+        else: edited_wave_file[1][i][0] = min(INT_RANGE)
 
+        if int(edited_wave_file[1][i][1] *1.2) in INT_RANGE :
+            edited_wave_file[1][i][1] = int(edited_wave_file[1][i][1] *1.2)
+        elif int(edited_wave_file[1][i][1] * 1.2) > max(INT_RANGE):
+            edited_wave_file[1][i][1] = max(INT_RANGE)
+        else: edited_wave_file[1][i][1] = min(INT_RANGE)
+    return edited_wave_file
 
 def volume_down_audio(edited_wave_file_list):
     pass
