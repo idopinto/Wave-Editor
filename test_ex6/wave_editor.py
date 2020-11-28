@@ -162,25 +162,27 @@ def volume_down_audio(edited_wave_file):
 
     return edited_wave_file
 
-def dim_filter_audio(edited_wave_file):
+def dim_filter_audio(audio_list):
     """
     7
     """
-    dimmed_wav_list = [edited_wave_file[0],[]]
-    for i in range(len(edited_wave_file[1])):
+    dimmed_wav_list = list()
+    if len(audio_list) == 0 or len(audio_list) == 1:
+        return audio_list
+    for i in range(len(audio_list)):
         if i == 0:
-            left_avg = int((edited_wave_file[1][i][0] + edited_wave_file[1][i + 1][0]) / 2)
-            right_avg = int((edited_wave_file[1][i][1] + edited_wave_file[1][i + 1][1]) / 2)
-        elif i == len(edited_wave_file[1]) - 1:
-            left_avg = int((edited_wave_file[1][i-1][0] + edited_wave_file[1][i][0]) / 2)
-            right_avg = int((edited_wave_file[1][i-1][1] + edited_wave_file[1][i][1]) / 2)
+            left_avg = int((audio_list[i][0] + audio_list[i + 1][0]) / 2)
+            right_avg = int((audio_list[i][1] + audio_list[i + 1][1]) / 2)
+        elif i == len(audio_list) - 1:
+            left_avg = int((audio_list[i - 1][0] + audio_list[i][0]) / 2)
+            right_avg = int((audio_list[i - 1][1] + audio_list[i][1]) / 2)
         else:
-            left_avg = int((edited_wave_file[1][i-1][0] + edited_wave_file[1][i][0]
-                            + edited_wave_file[1][i + 1][0]) / 3)
-            right_avg = int((edited_wave_file[1][i-1][1] + edited_wave_file[1][i][1]
-                             + edited_wave_file[1][i + 1][1]) / 3)
+            left_avg = int((audio_list[i - 1][0] + audio_list[i][0]
+                            + audio_list[i + 1][0]) / 3)
+            right_avg = int((audio_list[i - 1][1] + audio_list[i][1]
+                             + audio_list[i + 1][1]) / 3)
             # TODO check why -3 // 2 = -2  (suppose to be -1)
-        dimmed_wav_list[1].append([left_avg, right_avg])
+        dimmed_wav_list.append([left_avg, right_avg])
     return dimmed_wav_list
 
 def edit_wave_file():
@@ -240,7 +242,7 @@ def edit_wave_file():
         elif user_choice == '7':
             print(edited_wave_file_list)
             print("______________________________________________________")
-            edited_wave_file_list = dim_filter_audio(edited_wave_file_list)
+            edited_wave_file_list[1] = dim_filter_audio(edited_wave_file_list[1])
             print(edited_wave_file_list)
         else:
             print("-------------------------")
