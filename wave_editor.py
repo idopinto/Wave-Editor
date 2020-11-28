@@ -2,44 +2,50 @@ import wave_helper, copy, math
 
 # MENU_CHOICES = {1: "Reverse",2: "negative", 3: "accelerate", 4: "slow",5: "volume up", 6:"volume down",7: "filter dim"}
 INT_RANGE = range(-32768,32767)
+MIN_VOLUME = -32768
 MAX_VOLUME = 32767
 SAMPLE_RATE = 2000
-NOTE_DICT = {'A': 440,'B': 494,'C': 523,'D': 587,'E': 659,'F': 698,'G': 784, 'Q': 0}
-def start_menu():
-    # menu:
-    # 1. change wave file
-    # 2.compose melody in the correct format
-    # exit
 
-    user_input = input("Hey sir, press 1 to edit wav. file, 2 to compose a melody"
-                           "press 3 to exit moderfucker! ")
+NOTE_DICT = {'A': 440, 'B': 494, 'C': 523, 'D': 587, 'E': 659, 'F': 698, 'G': 784, 'Q': 0}
+
+def start_menu():
+    """ this function is the start menu of the program """
+
+    print("Welcome! \n --press 1 for editing wav file \n --press 2 for composing a melody \n --press 3 to exit menu\n")
+    user_input = input()
     while user_input != '3':
 
         if user_input == '1':
             edit_wave_file()
         elif user_input == '2':
-            exit_menu(compose_melody(input("Please insert the file to the the melody from")))
-        elif user_input == '3' :
-            pass
+            print("Enter file name to compose: ")
+            exit_menu(compose_melody(input()))
         else:
             print("invalid input, please try again!")
-        user_input = input("Hey sir, press 1 to edit wav. file, 2 to compose a melody"
-                               "press 3 to exit moderfucker! ")
+        print("Welcome! \n --press 1 for editing wav file \n --press 2 for composing a melody \n --press 3 to exit menu\n")
+        user_input = input()
 
 def exit_menu(wav_list):
-    output_file_name = input("How do you want to save this file?")
+    print("How do you want to save this file? ")
+    output_file_name = input()
     check_problem = wave_helper.save_wave(wav_list[0],wav_list[1], output_file_name+".wav")
     if check_problem == -1:
-        print("There was a problem")
-
+        print("There was a problem, action was'nt completed")
+    else:
+        print("Action completed \n hope you like it! \n --- returning to main menu ---")
     start_menu()
 
-def read_notes_for_compose(filename):
-        with open(filename, 'r') as notes_file:
-            note_file = []
-            for line in notes_file.readlines():
-                note_file.extend(line.strip().split())
 
+def read_notes_for_compose(filename):
+    """
+    :param filename:
+    :return:
+    """
+
+    with open(filename, 'r') as notes_file:
+        note_file = []
+        for line in notes_file.readlines():
+            note_file.extend(line.strip().split())
         return note_file
 
 
@@ -59,15 +65,17 @@ def compose_melody(filename):
     return composed_wav_file
 
 def print_menu():
-    """print menu infomation"""
-    print("1. reverse audio")
-    print("2.negative")
-    print("3.accelerate")
-    print("4.slow down")
-    print("5.volume up")
-    print("6.volume down")
-    print("7.filter dim")
-    print("8. return to main menu")
+    """print menu information"""
+    print("Welcome to editing menu!")
+    print("1. Reverse audio")
+    print("2. Negative")
+    print("3. Accelerate")
+    print("4. Slow down")
+    print("5. Volume up")
+    print("6. Volume down")
+    print("7. Low-Pass Filter")
+    print("8. Return to main menu")
+    print(" -- pick your choice: ")
 
 def get_file():
     """
@@ -75,7 +83,8 @@ def get_file():
     :param filename:
     :return:
     """
-    file_name_input = "sample1.wav" # input("enter wav filename: ")
+    print("Enter filename to edit: (-1 to cancel) ")
+    file_name_input = input()
     return file_name_input
 
 
@@ -93,14 +102,13 @@ def negative_audio(edited_wave_file):
     for i in range(len(edited_wave_file[1])):
         value_1 = edited_wave_file[1][i][0]
         value_2 = edited_wave_file[1][i][1]
-        if value_1 == -32768:
+        if value_1 == MIN_VOLUME:
             value_1 += 1
-        if value_2 == -32768:
+        if value_2 == MIN_VOLUME:
             value_2 += 1
         edited_wave_file[1][i][0] = -1 * value_1
         edited_wave_file[1][i][1] = -1 * value_2
     return edited_wave_file
-    # TODO test this function and check range limit
 
 
 def accelerate_audio(edited_wave_file):
@@ -177,66 +185,70 @@ def dim_filter_audio(edited_wave_file):
 def edit_wave_file():
     # get user input (1-7)
     wave_file_list = wave_helper.load_wave(get_file())
+    if wave_file_list == -1:
+        print("File is not supported!")
+        return -1
     edited_wave_file_list = copy.deepcopy(wave_file_list)
     # print(wave_file_list)
     print_menu()
     # edited_wave_file_list = [2000,[[1, 2], [2, 3], [3, 4], [4, 5]]]
     #edited_wave_file_list = [2000,[[-12,-12], [9,9], [20,-32768], [9, 9],[-12,-12],[2,2]]]
-    user_choice = input("enter your choice: ")
+    user_choice = input()
     if user_choice == '8':
         return edited_wave_file_list
 
     while user_choice != '8':
+
         if user_choice == '1':
             print(edited_wave_file_list)
             print("______________________________________________________")
             edited_wave_file_list = reverse_audio(edited_wave_file_list)
             print(edited_wave_file_list)
 
-        if user_choice == '2':
+        elif user_choice == '2':
             print(edited_wave_file_list)
             print("______________________________________________________")
             edited_wave_file_list = negative_audio(edited_wave_file_list)
             print(edited_wave_file_list)
 
-        if user_choice == '3':
+        elif user_choice == '3':
             print(edited_wave_file_list)
             print("______________________________________________________")
             edited_wave_file_list = accelerate_audio(edited_wave_file_list)
             print(edited_wave_file_list)
 
 
-        if user_choice == '4':
+        elif user_choice == '4':
             print(edited_wave_file_list)
             print("______________________________________________________")
             edited_wave_file_list = slow_down_audio(edited_wave_file_list)
             print(edited_wave_file_list)
 
-        if user_choice == '5':
+        elif user_choice == '5':
             print(edited_wave_file_list)
             print("______________________________________________________")
             edited_wave_file_list = volume_up_audio(edited_wave_file_list)
             print(edited_wave_file_list)
 
-        if user_choice == '6':
+        elif user_choice == '6':
             print(edited_wave_file_list)
             print("______________________________________________________")
             edited_wave_file_list = volume_down_audio(edited_wave_file_list)
             print(edited_wave_file_list)
 
-        if user_choice == '7':
+        elif user_choice == '7':
             print(edited_wave_file_list)
             print("______________________________________________________")
             edited_wave_file_list = dim_filter_audio(edited_wave_file_list)
             print(edited_wave_file_list)
-        user_choice = input("enter your choice: ")
+        else:
+            print("-------------------------")
+            print("Invalid input, try again!")
+            print("-------------------------")
+        print_menu()
+        user_choice = input()
     return exit_menu(edited_wave_file_list)
 
 
-
-def main():
-     start_menu()
-    #zubi(698, 16)
-    #read_notes_for_compose()
 if __name__ == '__main__':
-    main()
+    start_menu()
