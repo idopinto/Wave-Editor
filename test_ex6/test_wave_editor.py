@@ -25,10 +25,10 @@ WITH_PARAM = False
 GET_WAV_FUNC = wave_editor.get_file
 COMPOSE_BY_FILE_FUNC = wave_editor.compose_melody
 #CALCULATE_SAMPLE_FUNC = wave_editor.calculate_sample
-EXIT_MENU_FUNC = wave_editor.exit_menu
+EXIT_MENU_FUNC = wave_editor.save_audio
 MAIN_FUNC = wave_editor.start_menu
 # Use sys.exit for exit option (3 in main menu)
-USE_SYS_EXIT = True
+USE_SYS_EXIT = False
 
 
 # !!!!!!!!!! CHANGE HERE END !!!!!!!!!!
