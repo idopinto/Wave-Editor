@@ -327,20 +327,21 @@ def test_compose_by_file():
     assert ret == []
 
 
+
 def test_read_composing_file():
-    ret = read_composing_file('Test Samples/compose1.txt')
+    ret = read_notes_for_compose('Test Samples/compose1.txt')
     assert ret == [('D', 3), ('D', 1), ('E', 4), ('Q', 4), ('F', 4), ('E', 8),
                    ('D', 3), ('D', 1), ('E', 4), ('D', 4), ('A', 4), ('F', 8),
                    ('D', 3), ('D', 1)]
 
-    ret = read_composing_file('Test Samples/compose2.txt')
+    ret = read_notes_for_compose('Test Samples/compose2.txt')
     assert ret == [('G', 4), ('G', 4), ('C', 4), ('C', 4), ('D', 4), ('D', 4),
                    ('C', 8), ('B', 4), ('B', 4), ('A', 4), ('A', 4), ('G', 8)]
 
-    ret = read_composing_file('Test Samples/compose3.txt')
+    ret = read_notes_for_compose('Test Samples/compose3.txt')
     assert ret == []
 
-    ret = read_composing_file('Test Samples/compose4.txt')
+    ret = read_notes_for_compose('Test Samples/compose4.txt')
     assert ret == []
 
 
