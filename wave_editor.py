@@ -1,7 +1,7 @@
 import wave_helper, copy, math
 
 # MENU_CHOICES = {1: "Reverse",2: "negative", 3: "accelerate", 4: "slow",5: "volume up", 6:"volume down",7: "filter dim"}
-INT_RANGE = range(-32768,32767)
+INT_RANGE = range(-32768, 32767)
 MIN_VOLUME = -32768
 MAX_VOLUME = 32767
 SAMPLE_RATE = 2000
