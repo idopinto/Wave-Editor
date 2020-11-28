@@ -18,7 +18,9 @@ def start_menu():
         if user_input == '1':
             edit_wave_file()
         elif user_input == '2':
-            compose_melody()
+            exit_menu(compose_melody(input("Please insert the file to the the melody from")))
+        elif user_input == '3' :
+            pass
         else:
             print("invalid input, please try again!")
         user_input = input("Hey sir, press 1 to edit wav. file, 2 to compose a melody"
@@ -32,16 +34,16 @@ def exit_menu(wav_list):
 
     start_menu()
 
-def read_notes_for_compose(filename='sample1.txt'):
+def read_notes_for_compose(filename):
         with open(filename, 'r') as notes_file:
             note_file = []
-            for char in notes_file.read():
-                    note_file.append(char)
+            for line in notes_file.readlines():
+                note_file.extend(line.strip().split())
 
-        return note_file[::2]
+        return note_file
 
 
-def compose_melody(filename='sample1.txt'):
+def compose_melody(filename):
     """
     """
     notes_list = read_notes_for_compose(filename)
@@ -233,9 +235,8 @@ def edit_wave_file():
 
 
 def main():
-    # start_menu()
+     start_menu()
     #zubi(698, 16)
     #read_notes_for_compose()
-    exit_menu(compose_melody())
 if __name__ == '__main__':
     main()
