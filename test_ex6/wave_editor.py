@@ -49,7 +49,7 @@ def get_file():
     file_name_input = ""
     done = False
     while not done:
-        audio_list = [-1,-1]
+        audio_list = [-1, -1]
         print("Enter filename to edit: (-1 to cancel) ")
         file_name_input = input()
         if file_name_input == '-1':
@@ -62,14 +62,16 @@ def get_file():
                 print("----------------------")
             else:
                 done = True
-    return file_name_input, audio_list[0],audio_list[1]
+    return file_name_input, audio_list[0], audio_list[1]
+
 
 def get_input_for_edit():
     filename, sample_rate, audio_data = get_file()
 
     return filename, sample_rate, audio_data
 
-def editing_menu(filename, sample_rate,audio_data):
+
+def editing_menu(filename, sample_rate, audio_data):
     """
     """
     if audio_data == -1 and sample_rate == -1:
@@ -142,7 +144,7 @@ def reverse_audio(edited_wave_file):
     """
     1.
     """
-    return edited_wave_file[::-1]  # functi
+    return edited_wave_file[::-1]
 
 
 # function 2 of 7
@@ -193,19 +195,18 @@ def volume_up_audio(audio_list):
     """
     for i in range(len(audio_list)):
         if len(audio_list[i]) >= 1:
-            if int(audio_list[i][0] * 1.2) in INT_RANGE:
+            if int(audio_list[i][0] * 1.2) < MAX_VOLUME and int(audio_list[i][0] * 1.2) > MIN_VOLUME:
                 audio_list[i][0] = int(audio_list[i][0] * 1.2)
-            elif int(audio_list[i][0] * 1.2) > max(INT_RANGE):
-                audio_list[i][0] = max(INT_RANGE) + 1
+            elif int(audio_list[i][0] * 1.2) > MAX_VOLUME:
+                audio_list[i][0] = MAX_VOLUME
             else:
-                audio_list[i][0] = min(INT_RANGE)
-                # TODO create function because you suck
-            if int(audio_list[i][1] * 1.2) in INT_RANGE:
+                audio_list[i][0] = MIN_VOLUME
+            if int(audio_list[i][1] * 1.2) < MAX_VOLUME and int(audio_list[i][1] * 1.2) > MIN_VOLUME:
                 audio_list[i][1] = int(audio_list[i][1] * 1.2)
-            elif int(audio_list[i][1] * 1.2) > max(INT_RANGE):
-                audio_list[i][1] = max(INT_RANGE) + 1
+            elif int(audio_list[i][1] * 1.2) > MAX_VOLUME:
+                audio_list[i][1] = MAX_VOLUME
             else:
-                audio_list[i][1] = min(INT_RANGE)
+                audio_list[i][1] = MIN_VOLUME
     return audio_list
 
 
@@ -255,8 +256,8 @@ def convert_to_list_of_tuples(note_file):
     """
     """
     new_note_file = list()
-    for i in range(0,len(note_file),2):
-        new_note_file.append((note_file[i], int(note_file[i+1])))
+    for i in range(0, len(note_file), 2):
+        new_note_file.append((note_file[i], int(note_file[i + 1])))
 
     return new_note_file
 
@@ -282,7 +283,7 @@ def fix_list(note_file):
             if note_file[i].isalpha():
                 fixed_list.append(note_file[i])
             elif i < len(note_file) - 1:
-                if note_file[i].isdigit() and note_file[i+1].isdigit():
+                if note_file[i].isdigit() and note_file[i + 1].isdigit():
                     fixed_list.append(note_file[i] + note_file[i + 1])
                     note_file.remove(note_file[i + 1])
                 else:
@@ -298,7 +299,6 @@ def compose_melody(filename):
     """
     """
     notes_list = read_notes_for_compose(filename)
-    print(notes_list)
     composed_audio_list = list()
 
     for note in range(0, len(notes_list)):
@@ -309,6 +309,7 @@ def compose_melody(filename):
             sample_for_sound = duration * 125  # number
             samples_per_cycle = SAMPLE_RATE / frequency_rate
         elif char == SILENCE:
+            sample_for_sound = duration * 125
             samples_per_cycle = 0
 
         for i in range(sample_for_sound):
@@ -321,7 +322,6 @@ def compose_melody(filename):
     return composed_audio_list
 
 
-
 def start_menu():
     """ this function is the start menu of the program """
 
@@ -332,12 +332,12 @@ def start_menu():
         user_input = input()
         if user_input == '1':
             filename, sample_rate, audio_data = get_file()
-            editing_menu(filename,sample_rate,audio_data)
+            editing_menu(filename, sample_rate, audio_data)
         elif user_input == '2':
             composed_file_input = get_file_for_compose()
             if composed_file_input == '-1':
                 continue
-            composed_file = [SAMPLE_RATE,[]]
+            composed_file = [SAMPLE_RATE, []]
             composed_file[1] = compose_melody(composed_file_input)
             print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
             print("~~Composition completed. Refering to editing menu...~~")
@@ -350,6 +350,7 @@ def start_menu():
         if user_input == '3':
             keep_it_active = False
     print("GOODBYE")
+
 
 def print_menu():
     """print menu information"""
@@ -365,8 +366,7 @@ def print_menu():
     print(" -- pick your choice: ")
 
 
-
-def save_audio(filename ,wav_list):
+def save_audio(filename, wav_list):
     """
     """
     valid_file = False
@@ -376,7 +376,9 @@ def save_audio(filename ,wav_list):
         temp_file = input("enter valid filename: ")
         if temp_file != "":
             valid_file = True
-    wave_helper.save_wave(wav_list[0], wav_list[1], temp_file + ".wav")
+        #if ".wav" not in temp_file:
+         #   temp_file += ".wav"
+    wave_helper.save_wave(wav_list[0], wav_list[1], temp_file)
 
 
 if __name__ == '__main__':

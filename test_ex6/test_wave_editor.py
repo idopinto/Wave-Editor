@@ -492,8 +492,8 @@ def test_main(capsys):
         '3',  # slow
         '4',  # volume up
         '5',  # volume down
-        '6',  # blur
-        '7',  # exit
+        '7',  # blur
+        '8',  # exit
         'test samples/hatikva.wav',  # save path
         '3',  # exit all
     ]
