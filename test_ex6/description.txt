@@ -1,0 +1,37 @@
+functions:
+1.start menu: this function gets no parameters. the function runs until the user has entered 3. if the user entered 1,
+    the function will call the get file function and then call the editing file menu. if entered 2, the function calls the
+    compose melody function.the function returns nothing.
+
+2. print_menu:
+
+3.get_file: return file_name_input, audio_list[0], audio_list[1]
+
+4.get_input_for_edit: return filename, sample_rate, audio_data
+
+5.editing_menu: filename, sample_rate, audio_data
+
+6.reverse_audio: audio_list
+    this function gets list and and return reversed list .
+7.negative_audio
+    this function gets list and multiply every element by -1 and return the list
+8.accelerate_audio
+    this function gets list and return new list with the even elements of the original list
+9.slow_down_audio
+    this function get wav list and add between each pair new item which is the average of them
+10.volume_up_audio
+    this function gets list and multiply every element by 1.2 and return the list
+11.volume_down_audio
+    this function gets list and divides every element by 1.2 and return the list
+12.dim_filter_audio
+    this function gets wav list, replacing every element in the average of the prior ,current and next element.
+    replacing the first element in the average of him and the next element.
+    replacing the last element in the average of him and the prior element.
+
+13.save_audio: file name,wav_list
+this function creates wav file from wav_list and saves it as wav file.
+14.compose_melody
+15.get_file_for_compose : return file_to_compose
+16.read_notes_for_compose
+17.fix_list
+18.convert_to_list_of_tuples
