@@ -24,8 +24,9 @@ SILENCE = 'Q'
 def get_file_for_compose():
     file_to_compose = ""
     done = False
+    print("Welcome to compose mode!")
     while not done:
-        print("Enter filename to edit: (-1 to cancel) ")
+        print("Enter instructions file name to compose: (-1 to cancel) ")
         file_to_compose = input()
         if file_to_compose == '-1':
             done = True
@@ -254,7 +255,9 @@ def convert_to_list_of_tuples(note_file):
     """
     new_note_file = list()
     for i in range(0,len(note_file),2):
+        print(new_note_file)
         new_note_file.append((note_file[i], int(note_file[i+1])))
+
     return new_note_file
 
 def read_notes_for_compose(filename):
@@ -264,8 +267,9 @@ def read_notes_for_compose(filename):
 
     with open(filename, 'r') as notes_file:
         note_file = []
-        for line in notes_file.readlines():
-            note_file.extend(line.strip().split())
+        for char in notes_file.read():
+            note_file.extend(char.strip().split())
+        print(note_file)
         note_file = convert_to_list_of_tuples(note_file)
         return note_file
 
@@ -304,7 +308,7 @@ def start_menu():
     keep_it_active = True
     while keep_it_active:
 
-        print("Welcome! \n --press 1 for editing wav file \n --press 2 for composing a melody \n --press 3 to exit menu\n")
+        print("Welcome! \n --press 1 for editing wav file \n --press 2 for composing a melody \n --press 3 to exit \n")
         user_input = input()
         if user_input == '1':
             filename, sample_rate, audio_data = get_file()
