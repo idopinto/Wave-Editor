@@ -250,15 +250,16 @@ def dim_filter_audio(audio_list):
 # ~~~~OPTION 2~~~COMPOSE MENU~~~~~~~####
 ########################################
 
+
 def convert_to_list_of_tuples(note_file):
     """
     """
     new_note_file = list()
     for i in range(0,len(note_file),2):
-        print(new_note_file)
         new_note_file.append((note_file[i], int(note_file[i+1])))
 
     return new_note_file
+
 
 def read_notes_for_compose(filename):
     """
@@ -269,9 +270,28 @@ def read_notes_for_compose(filename):
         note_file = []
         for char in notes_file.read():
             note_file.extend(char.strip().split())
-        print(note_file)
-        note_file = convert_to_list_of_tuples(note_file)
-        return note_file
+        note_file = convert_to_list_of_tuples(fix_list(note_file))
+
+    return note_file
+
+
+def fix_list(note_file):
+    fixed_list = []
+    for i in range(len(note_file) + 1):
+        if i < len(note_file):
+            if note_file[i].isalpha():
+                fixed_list.append(note_file[i])
+            elif i < len(note_file) - 1:
+                if note_file[i].isdigit() and note_file[i+1].isdigit():
+                    fixed_list.append(note_file[i] + note_file[i + 1])
+                    note_file.remove(note_file[i + 1])
+                else:
+                    fixed_list.append(note_file[i])
+
+            else:
+                fixed_list.append(note_file[i])
+
+    return fixed_list
 
 
 def compose_melody(filename):
