@@ -62,7 +62,9 @@ def print_menu():
 
 def get_file():
     """
-    this function gets return wav file according to user input
+    the function gets no parameters. the function call the load_wave function and ask for a file_name_input.
+    then function returns the filename input given, the wav audio_list[0](str represent the sample rate)
+    and audio_list[1](the audio date. list of lists represents the values of each sample).
     """
     file_name_input = ""
     done = False
@@ -90,6 +92,8 @@ def get_file():
 
 def editing_menu(filename, sample_rate, audio_data):
     """
+    the function gets the filename, the sample_rate and the audio data. the function calls the functions according to the
+    input provided. the function does not return any arguments.
     """
     if audio_data == -1 and sample_rate == -1:
         return
@@ -159,7 +163,7 @@ def editing_menu(filename, sample_rate, audio_data):
 # function 1 of 7
 def reverse_audio(edited_wave_file):
     """
-    1.
+    1.this function gets list of lists (the audio data) and and returns a reversed list.
     """
     return edited_wave_file[::-1]
 
@@ -167,7 +171,7 @@ def reverse_audio(edited_wave_file):
 # function 2 of 7
 def negative_audio(audio_list):
     """
-    2.
+    2.this function gets list and multiply every element by -1 and returns the list
     """
     for i in range(len(audio_list)):
         value_1 = audio_list[i][0]
@@ -184,7 +188,7 @@ def negative_audio(audio_list):
 # function 3 of 7
 def accelerate_audio(edited_wave_file):
     """
-    3.
+    3. this function gets list and returns new list with the even elements of the original list.
     """
     accelerate_wave = list()
     for i in range(len(edited_wave_file)):
@@ -196,7 +200,7 @@ def accelerate_audio(edited_wave_file):
 
 # function 4 of 7
 def slow_down_audio(audio_list):
-    """ 4. this function get wav list and add between each pair new item which is the average of them"""
+    """ 4. this function get wav list and add between each pair new item which is the average of them."""
     samples_len = len(audio_list)
     for i in range(1, 2 * samples_len - 1, 2):
         avg1 = int((audio_list[i - 1][0] + audio_list[i][0]) / 2)
@@ -208,7 +212,7 @@ def slow_down_audio(audio_list):
 # function 5 of 7
 def volume_up_audio(audio_list):
     """
-    5
+    5.this function gets list and multiply every element by 1.2 and return the list.
     """
     for i in range(len(audio_list)):
         if len(audio_list[i]) >= 1:
@@ -230,7 +234,7 @@ def volume_up_audio(audio_list):
 # function 6 of 7
 def volume_down_audio(audio_list):
     """
-    6
+    6. this function gets list and divides every element by 1.2 and return the list.
     """
     for i in range(len(audio_list)):
         if len(audio_list[i]) >= 1:
@@ -243,7 +247,9 @@ def volume_down_audio(audio_list):
 # function 7 of 7
 def dim_filter_audio(audio_list):
     """
-    7
+    7. this function gets wav list, replacing every element in the average of the prior ,current and next element.
+    replacing the first element in the average of him and the next element.
+    replacing the last element in the average of him and the prior element.
     """
     dimmed_wav_list = list()
     if len(audio_list) == 0 or len(audio_list) == 1:
@@ -266,6 +272,8 @@ def dim_filter_audio(audio_list):
 
 def save_audio(filename, wav_list):
     """
+    the function gets a file name and auido data (lst)
+    this function creates wav file from wav_list and saves it as wav file.
     """
     valid_file = False
     temp_file = filename
@@ -286,6 +294,9 @@ def save_audio(filename, wav_list):
 
 def compose_melody(filename):
     """
+    this function gets a filename.
+    the composes a melody using the instructions from the provided file .
+    the function returns list representing the audio data of the composed melody.
     """
     notes_list = read_notes_for_compose(filename)
     composed_audio_list = list()
@@ -312,6 +323,11 @@ def compose_melody(filename):
 
 
 def get_file_for_compose():
+    """
+    this function gets no parameters. the function gets a file name from the user
+    the take the instructions for composing a melody from.
+    the function returns the file name.
+    """
     file_to_compose = ""
     done = False
     print("Welcome to compose mode!")
@@ -334,7 +350,8 @@ def get_file_for_compose():
 
 def read_notes_for_compose(filename):
     """
-    this function gets txt file, read it and converts the content into list
+    the function gets a filename of the instructions file, reads all lines in the file and returns
+    a list in the wanted format for composing a melody.
     """
 
     with open(filename, 'r') as notes_file:
@@ -347,6 +364,11 @@ def read_notes_for_compose(filename):
 
 
 def fix_list(note_file):
+    """
+    this function gets a list (the list created to take the instructions for composing a melody)
+    and returns the list in the wanted format (str alpha element and one str digit element right after).
+    this function is mainly for taking care for all options of instructions provided.
+    """
     fixed_list = []
     for i in range(len(note_file) + 1):
         if i < len(note_file):
@@ -367,6 +389,7 @@ def fix_list(note_file):
 
 def convert_to_list_of_tuples(note_file):
     """
+    this function gets list of lists and converts it and returns a list of tuples.
     """
     new_note_file = list()
     for i in range(0, len(note_file), 2):
