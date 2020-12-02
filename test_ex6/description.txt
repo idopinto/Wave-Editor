@@ -1,37 +1,67 @@
 functions:
-1.start menu: this function gets no parameters. the function runs until the user has entered 3. if the user entered 1,
+
+1.start menu:
+    this function gets no parameters. the function runs until the user has entered 3. if the user entered 1,
     the function will call the get file function and then call the editing file menu. if entered 2, the function calls the
     compose melody function.the function returns nothing.
 
 2. print_menu:
+    this function gets no parameters. the functions prints the main menu. the function returns nothing.
 
-3.get_file: return file_name_input, audio_list[0], audio_list[1]
+3.get_file:
+    the function gets no parameters. the function call the load_wave function and ask for a file_name_input.
+    then function returns the filename input given, the wav audio_list[0](str represent the sample rate)
+    and audio_list[1](the audio date. list of lists represents the values of each sample).
 
-4.get_input_for_edit: return filename, sample_rate, audio_data
+4.editing_menu:
+    the function gets the filename, the sample_rate and the audio data. the function calls.
 
-5.editing_menu: filename, sample_rate, audio_data
+5.reverse_audio:
+    audio_list
+    this function gets list of lists (the audio date) and and returns a reversed list.
 
-6.reverse_audio: audio_list
-    this function gets list and and return reversed list .
-7.negative_audio
-    this function gets list and multiply every element by -1 and return the list
-8.accelerate_audio
-    this function gets list and return new list with the even elements of the original list
-9.slow_down_audio
-    this function get wav list and add between each pair new item which is the average of them
-10.volume_up_audio
-    this function gets list and multiply every element by 1.2 and return the list
-11.volume_down_audio
-    this function gets list and divides every element by 1.2 and return the list
-12.dim_filter_audio
+6.negative_audio
+    this function gets list and multiply every element by -1 and returns the list.
+
+7.accelerate_audio
+    this function gets list and returns new list with the even elements of the original list.
+
+8.slow_down_audio
+    this function get wav list and add between each pair new item which is the average of them.
+
+9.volume_up_audio
+    this function gets list and multiply every element by 1.2 and return the list.
+
+10.volume_down_audio
+    this function gets list and divides every element by 1.2 and return the list.
+
+11.dim_filter_audio
     this function gets wav list, replacing every element in the average of the prior ,current and next element.
     replacing the first element in the average of him and the next element.
     replacing the last element in the average of him and the prior element.
 
-13.save_audio: file name,wav_list
-this function creates wav file from wav_list and saves it as wav file.
-14.compose_melody
-15.get_file_for_compose : return file_to_compose
-16.read_notes_for_compose
-17.fix_list
-18.convert_to_list_of_tuples
+12.save_audio:
+    the function gets a file name and auido data (lst)
+    this function creates wav file from wav_list and saves it as wav file.
+
+13.compose_melody
+    this function gets a filename.
+    the composes a melody using the instructions from the provided file .
+    the function returns list representing the audio data of the composed melody.
+
+14.get_file_for_compose : 
+    this function gets no parameters. the function gets a file name from the user 
+    the take the instructions for composing a melody from. the function the file name.
+
+15.read_notes_for_compose:
+    the function gets a filename of the instructions file, reads all lines in the file and returns
+    a list in the wanted format for composing a melody.
+
+16.fix_list:
+    this function gets a list (the list created to take the instructions for composing a melody)
+    and returns the list in the wanted format (str alpha element and one str digit element right after).
+    this function is mainly for taking care for all options of the instruction input.
+
+17.convert_to_list_of_tuples:
+    this function gets list of lists and converts it and returns a list of tuples.
+
