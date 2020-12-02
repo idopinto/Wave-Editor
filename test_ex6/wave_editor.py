@@ -16,30 +16,48 @@ SAMPLE_RATE = 2000
 NOTE_DICT = {'A': 440, 'B': 494, 'C': 523, 'D': 587, 'E': 659, 'F': 698, 'G': 784}
 SILENCE = 'Q'
 
+def start_menu():
+    """ this function is the start menu of the program """
 
-########################################
-# ~~~~OPTION 1~~~EDITING MENU~~~~~~~####
-########################################
+    keep_it_active = True
+    while keep_it_active:
 
-def get_file_for_compose():
-    file_to_compose = ""
-    done = False
-    print("Welcome to compose mode!")
-    while not done:
-        print("Enter instructions file name to compose: (-1 to cancel) ")
-        file_to_compose = input()
-        if file_to_compose == '-1':
-            done = True
-        else:
+        print("Welcome! \n --press 1 for editing wav file \n --press 2 for composing a melody \n --press 3 to exit \n")
+        user_input = input()
+        if user_input == '1':
+            filename, sample_rate, audio_data = get_file()
+            editing_menu(filename, sample_rate, audio_data)
+        elif user_input == '2':
+            composed_file_input = get_file_for_compose()
+            if composed_file_input == '-1':
+                continue
+            composed_file = [SAMPLE_RATE, []]
+            composed_file[1] = compose_melody(composed_file_input)
+            print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            print("~~Composition completed. Refering to editing menu...~~")
+            print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            editing_menu(composed_file_input, composed_file[0], composed_file[1])
+        elif user_input != '3':
+            print("-------------------------")
+            print("Invalid input, try again!")
+            print("-------------------------")
+        if user_input == '3':
+            keep_it_active = False
+    print("GOODBYE")
 
-            if not os.path.isfile(file_to_compose):
-                print("----------------------")
-                print("-File doesn't exist!--")
-                print("----------------------")
-            else:
-                done = True
 
-    return file_to_compose
+def print_menu():
+    """print menu information"""
+    print("Welcome to editing menu!")
+    print("1. Reverse audio")
+    print("2. Negative")
+    print("3. Accelerate")
+    print("4. Slow down")
+    print("5. Volume up")
+    print("6. Volume down")
+    print("7. Low-Pass Filter")
+    print("8. Save File and return to main menu")
+    print(" -- pick your choice: ")
 
 
 def get_file():
@@ -64,11 +82,10 @@ def get_file():
                 done = True
     return file_name_input, audio_list[0], audio_list[1]
 
+########################################
+# ~~~~OPTION 1~~~EDITING MENU~~~~~~~####
+########################################
 
-def get_input_for_edit():
-    filename, sample_rate, audio_data = get_file()
-
-    return filename, sample_rate, audio_data
 
 
 def editing_menu(filename, sample_rate, audio_data):
@@ -247,19 +264,72 @@ def dim_filter_audio(audio_list):
     return dimmed_wav_list
 
 
+def save_audio(filename, wav_list):
+    """
+    """
+    valid_file = False
+    temp_file = filename
+    print(f"File name: {filename}.  Do you want to change the name?")
+    while not valid_file:
+        temp_file = input("enter valid filename: ")
+        if temp_file != "":
+            valid_file = True
+        #TODO CHECK IF IT IS OKAY TO THIS SHIT
+        #if ".wav" not in temp_file:
+         #   temp_file += ".wav"
+    wave_helper.save_wave(wav_list[0], wav_list[1], temp_file)
+
+
 ########################################
 # ~~~~OPTION 2~~~COMPOSE MENU~~~~~~~####
 ########################################
 
-
-def convert_to_list_of_tuples(note_file):
+def compose_melody(filename):
     """
     """
-    new_note_file = list()
-    for i in range(0, len(note_file), 2):
-        new_note_file.append((note_file[i], int(note_file[i + 1])))
+    notes_list = read_notes_for_compose(filename)
+    composed_audio_list = list()
 
-    return new_note_file
+    for note in range(0, len(notes_list)):
+
+        char, duration = notes_list[note]
+        if char != SILENCE:
+            frequency_rate = NOTE_DICT[char]  # Note
+            sample_for_sound = duration * 125  # number
+            samples_per_cycle = SAMPLE_RATE / frequency_rate
+        elif char == SILENCE:
+            sample_for_sound = duration * 125
+            samples_per_cycle = 0
+
+        for i in range(sample_for_sound):
+            if samples_per_cycle == 0:
+                composed_audio_list.append([0, 0])
+            else:
+                formula = int(MAX_VOLUME * math.sin((2 * math.pi * i) / samples_per_cycle))
+                composed_audio_list.append([formula, formula])
+    print(len(composed_audio_list))
+    return composed_audio_list
+
+
+def get_file_for_compose():
+    file_to_compose = ""
+    done = False
+    print("Welcome to compose mode!")
+    while not done:
+        print("Enter instructions file name to compose: (-1 to cancel) ")
+        file_to_compose = input()
+        if file_to_compose == '-1':
+            done = True
+        else:
+
+            if not os.path.isfile(file_to_compose):
+                print("----------------------")
+                print("-File doesn't exist!--")
+                print("----------------------")
+            else:
+                done = True
+
+    return file_to_compose
 
 
 def read_notes_for_compose(filename):
@@ -295,90 +365,16 @@ def fix_list(note_file):
     return fixed_list
 
 
-def compose_melody(filename):
+def convert_to_list_of_tuples(note_file):
     """
     """
-    notes_list = read_notes_for_compose(filename)
-    composed_audio_list = list()
+    new_note_file = list()
+    for i in range(0, len(note_file), 2):
+        new_note_file.append((note_file[i], int(note_file[i + 1])))
 
-    for note in range(0, len(notes_list)):
-
-        char, duration = notes_list[note]
-        if char != SILENCE:
-            frequency_rate = NOTE_DICT[char]  # Note
-            sample_for_sound = duration * 125  # number
-            samples_per_cycle = SAMPLE_RATE / frequency_rate
-        elif char == SILENCE:
-            sample_for_sound = duration * 125
-            samples_per_cycle = 0
-
-        for i in range(sample_for_sound):
-            if samples_per_cycle == 0:
-                composed_audio_list.append([0, 0])
-            else:
-                formula = int(MAX_VOLUME * math.sin((2 * math.pi * i) / samples_per_cycle))
-                composed_audio_list.append([formula, formula])
-    print(len(composed_audio_list))
-    return composed_audio_list
+    return new_note_file
 
 
-def start_menu():
-    """ this function is the start menu of the program """
-
-    keep_it_active = True
-    while keep_it_active:
-
-        print("Welcome! \n --press 1 for editing wav file \n --press 2 for composing a melody \n --press 3 to exit \n")
-        user_input = input()
-        if user_input == '1':
-            filename, sample_rate, audio_data = get_file()
-            editing_menu(filename, sample_rate, audio_data)
-        elif user_input == '2':
-            composed_file_input = get_file_for_compose()
-            if composed_file_input == '-1':
-                continue
-            composed_file = [SAMPLE_RATE, []]
-            composed_file[1] = compose_melody(composed_file_input)
-            print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-            print("~~Composition completed. Refering to editing menu...~~")
-            print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-            editing_menu(composed_file_input, composed_file[0], composed_file[1])
-        elif user_input != '3':
-            print("-------------------------")
-            print("Invalid input, try again!")
-            print("-------------------------")
-        if user_input == '3':
-            keep_it_active = False
-    print("GOODBYE")
-
-
-def print_menu():
-    """print menu information"""
-    print("Welcome to editing menu!")
-    print("1. Reverse audio")
-    print("2. Negative")
-    print("3. Accelerate")
-    print("4. Slow down")
-    print("5. Volume up")
-    print("6. Volume down")
-    print("7. Low-Pass Filter")
-    print("8. Save File and return to main menu")
-    print(" -- pick your choice: ")
-
-
-def save_audio(filename, wav_list):
-    """
-    """
-    valid_file = False
-    temp_file = filename
-    print(f"File name: {filename}.  Do you want to change the name?")
-    while not valid_file:
-        temp_file = input("enter valid filename: ")
-        if temp_file != "":
-            valid_file = True
-        #if ".wav" not in temp_file:
-         #   temp_file += ".wav"
-    wave_helper.save_wave(wav_list[0], wav_list[1], temp_file)
 
 
 if __name__ == '__main__':
