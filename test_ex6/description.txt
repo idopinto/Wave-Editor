@@ -14,11 +14,11 @@ functions:
     and audio_list[1](the audio date. list of lists represents the values of each sample).
 
 4.editing_menu:
-    the function gets the filename, the sample_rate and the audio data. the function calls.
+    the function gets the filename, the sample_rate and the audio data. the function calls the functions according to the
+    input provided. the function does not return any arguments.
 
 5.reverse_audio:
-    audio_list
-    this function gets list of lists (the audio date) and and returns a reversed list.
+    this function gets list of lists (the audio data) and and returns a reversed list.
 
 6.negative_audio
     this function gets list and multiply every element by -1 and returns the list.
@@ -49,8 +49,8 @@ functions:
     the composes a melody using the instructions from the provided file .
     the function returns list representing the audio data of the composed melody.
 
-14.get_file_for_compose : 
-    this function gets no parameters. the function gets a file name from the user 
+14.get_file_for_compose :
+    this function gets no parameters. the function gets a file name from the user
     the take the instructions for composing a melody from. the function the file name.
 
 15.read_notes_for_compose:
@@ -60,7 +60,7 @@ functions:
 16.fix_list:
     this function gets a list (the list created to take the instructions for composing a melody)
     and returns the list in the wanted format (str alpha element and one str digit element right after).
-    this function is mainly for taking care for all options of the instruction input.
+    this function is mainly for taking care for all options of instructions provided.
 
 17.convert_to_list_of_tuples:
     this function gets list of lists and converts it and returns a list of tuples.
